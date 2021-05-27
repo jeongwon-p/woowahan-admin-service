@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +39,12 @@ public class UserService {
 
     @Transactional
     public void join(UserJoinRequestBody request) {
+        Pattern pattern = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
+        Matcher matcher = pattern.matcher(request.getEmailId());
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Email format is not correct");
+        }
+
         userDao.save(new User(
                 request.getEmailId(),
                 request.isHidden(),
