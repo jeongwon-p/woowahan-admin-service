@@ -21,6 +21,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
+
+    implementation('org.apache.poi:poi-ooxml:4.1.2')
 }
 
 test {

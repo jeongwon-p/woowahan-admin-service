@@ -55,7 +55,11 @@ public class UserService {
         );
     }
 
-    public List<UserView> searchMembers() {
+    public List<UserView> searchUsers() {
         return userDao.findAll().stream().map(UserView::new).collect(Collectors.toList());
+    }
+
+    public List<User> getUsers(List<String> emailId) {
+        return userDao.findAllById(emailId);
     }
 }
