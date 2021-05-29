@@ -1,0 +1,35 @@
+server:
+  port: 8001
+#MYSQL
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/study_db?autoReconnect=true&useSSL=false
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: 1234
+  jpa:
+    database: mysql
+    show-sql: true
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: e80f69870857f3d75c050f61e4bd5a44
+            client-secret: rP9iQ9kfJzh78oXx1Ul8curqqhfLzNwP
+            scope:
+              - profile
+              - accout_email
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            client-authentication-method: POST
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
