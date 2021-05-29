@@ -1,6 +1,8 @@
 package com.woowahan.woowahanadminservice.controller;
 
-import com.woowahan.woowahanadminservice.domain.user.util.ExcelGenerator;
+import com.woowahan.woowahanadminservice.util.ExcelGenerator;
+import com.woowahan.woowahanadminservice.domain.user.dto.request.LogInRequestBody;
+import com.woowahan.woowahanadminservice.domain.user.dto.view.LogInResponse;
 import com.woowahan.woowahanadminservice.UserService;
 import com.woowahan.woowahanadminservice.domain.user.dto.request.UserHideRequestBody;
 import com.woowahan.woowahanadminservice.domain.user.dto.request.UserJoinRequestBody;
@@ -12,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +29,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ApiOperation("Kakaotalk Oauth 로그인")
+    @GetMapping(value = "/oauth/kakaotalk")
+    public String getAuthorizationCode(@RequestParam("code") String authorizationCode) {
+        //String access_Token = userService.getAuthorizationCodeWithKakao(authorizationCode);
+        return "kakao/main";
+    }
+
     @ApiOperation("사용자 숨기기 및 숨기기 취소")
     @PostMapping(value = "/user/hide")
     public void hideOrCancelArticle(@RequestBody UserHideRequestBody request) {
@@ -38,9 +48,22 @@ public class UserController {
         userService.join(request);
     }
 
+    @ApiOperation("로그인")
+    @PostMapping(value = "/login")
+    public ResponseEntity<LogInResponse> logIn(@RequestBody LogInRequestBody request) {
+        return ResponseEntity.ok().body(userService.logIn(request));
+    }
+
+    @ApiOperation("로그아웃")
+    @GetMapping("/logout")
+    public String logOut(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @ApiOperation("사용자 목록 조회")
     @GetMapping(value = "/user")
-    public ResponseEntity<List<UserView>> searchMember() {
+    public ResponseEntity<List<UserView>> searchUsers() {
         return ResponseEntity.ok(userService.searchUsers());
     }
 

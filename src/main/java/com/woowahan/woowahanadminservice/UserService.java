@@ -1,10 +1,14 @@
 package com.woowahan.woowahanadminservice;
 
 import com.woowahan.woowahanadminservice.domain.user.dao.UserRepository;
+import com.woowahan.woowahanadminservice.domain.user.dto.request.LogInRequestBody;
 import com.woowahan.woowahanadminservice.domain.user.dto.request.UserHideRequestBody;
 import com.woowahan.woowahanadminservice.domain.user.dto.request.UserJoinRequestBody;
+import com.woowahan.woowahanadminservice.domain.user.dto.view.LogInResponse;
 import com.woowahan.woowahanadminservice.domain.user.dto.view.UserView;
 import com.woowahan.woowahanadminservice.domain.user.entity.User;
+import com.woowahan.woowahanadminservice.domain.user.type.Role;
+import com.woowahan.woowahanadminservice.util.JwtTokenProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +23,16 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final BCryptPasswordEncoder encoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userDao;
 
     public UserService(
             BCryptPasswordEncoder encoder,
+            JwtTokenProvider jwtTokenProvider,
             UserRepository userDao
     ) {
         this.encoder = encoder;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userDao = userDao;
     }
 
@@ -51,8 +58,27 @@ public class UserService {
                 request.getName(),
                 encoder.encode(request.getPassword()),
                 0,
+                Role.USER,
                 0)
         );
+    }
+
+    @Transactional
+    public LogInResponse logIn(LogInRequestBody request) {
+        User user = userDao.findById(request.getEmailId())
+                .filter(info -> encoder.matches(request.getPassword(), info.getPassword())).stream()
+                .findAny()
+                .orElseThrow(() -> new IllegalAccessError("Email or password is wrong"));
+
+        return new LogInResponse(
+                user.getName(),
+                this.createToken(user.getEmailId()),
+                user.getEmailId()
+        );
+    }
+
+    private String createToken(String userId) {
+        return jwtTokenProvider.createToken(userId);
     }
 
     public List<UserView> searchUsers() {

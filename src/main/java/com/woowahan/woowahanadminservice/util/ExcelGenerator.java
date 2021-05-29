@@ -1,4 +1,4 @@
-package com.woowahan.woowahanadminservice.domain.user.util;
+package com.woowahan.woowahanadminservice.util;
 
 import com.woowahan.woowahanadminservice.domain.user.entity.User;
 import org.apache.poi.ss.usermodel.*;

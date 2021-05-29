@@ -1,6 +1,7 @@
 package com.woowahan.woowahanadminservice.domain.user.entity;
 
 import com.woowahan.woowahanadminservice.common.BooleanToYnConverter;
+import com.woowahan.woowahanadminservice.domain.user.type.Role;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -28,6 +29,10 @@ public class User {
     @Column(name = "ranking")
     private int rank;
 
+    @Column(name = "role", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
     @Column(name = "score")
     private int score;
 
@@ -40,6 +45,7 @@ public class User {
             String name,
             String password,
             int rank,
+            Role role,
             int score
     ) {
         this.emailId = emailId;
@@ -47,6 +53,7 @@ public class User {
         this.name = name;
         this.password = password;
         this.rank = rank;
+        this.role = role;
         this.score = score;
     }
 
@@ -70,6 +77,7 @@ public class User {
                 this.name,
                 this.password,
                 this.rank,
+                this.role,
                 this.score
         );
     }
@@ -92,6 +100,10 @@ public class User {
 
     public int getRank() {
         return rank;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public int getScore() {
