@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @Column(name = "email_id")
-    private String emailId;
+    private String id;
 
     @Column(name = "hide_yn", columnDefinition = "varchar(1) default 'N'")
     @Convert(converter = BooleanToYnConverter.class)
@@ -40,7 +40,7 @@ public class User {
     }
 
     public User(
-            String emailId,
+            String id,
             boolean hidden,
             String name,
             String password,
@@ -48,7 +48,7 @@ public class User {
             Role role,
             int score
     ) {
-        this.emailId = emailId;
+        this.id = id;
         this.hidden = hidden;
         this.name = name;
         this.password = password;
@@ -62,17 +62,17 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return emailId.equals(user.emailId);
+        return id.equals(user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emailId);
+        return Objects.hash(id);
     }
 
     public User hideOrCancel() {
         return new User(
-                this.emailId,
+                this.id,
                 !this.hidden,
                 this.name,
                 this.password,
@@ -82,8 +82,8 @@ public class User {
         );
     }
 
-    public String getEmailId() {
-        return emailId;
+    public String getId() {
+        return id;
     }
 
     public boolean isHidden() {

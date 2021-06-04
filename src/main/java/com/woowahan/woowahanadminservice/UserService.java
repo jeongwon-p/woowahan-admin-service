@@ -68,18 +68,33 @@ public class UserService {
         User user = userDao.findById(request.getEmailId())
                 .filter(info -> encoder.matches(request.getPassword(), info.getPassword())).stream()
                 .findAny()
-                .orElseThrow(() -> new IllegalAccessError("Email or password is wrong"));
+                .orElseThrow(() -> new   IllegalAccessError("Email or password is wrong"));
 
         return new LogInResponse(
                 user.getName(),
-                this.createToken(user.getEmailId()),
-                user.getEmailId()
+                this.createToken(user, List.of(user.getRole())),
+                user.getId()
         );
     }
 
-    private String createToken(String userId) {
-        return jwtTokenProvider.createToken(userId);
+    private String createToken(User user, List<Role> roles) {
+        String accessToken = jwtTokenProvider.createToken(user.getId(), roles);
+        //String refreshToken = jwtTokenProvider.createToken(user.getEmailId(), roles);
+//        saveRefreshTokenValue(user, refreshToken);
+        return accessToken;
     }
+
+    private void saveRefreshTokenValue(User user, String refreshToken) {
+
+    }
+
+//    public String refreshUserTokens() {
+//        UserToken userToken = ;
+//        String currentAccessToken = payload.get("refreshToken").asText();
+//        checkIfRefreshTokenValid(user.(), currentAccessToken);
+//        String[] jwtTokens = this.createToken(user.getEmailId(), List.of(user.getRole()));
+//        return buildRefreshUserTokensJsonResponse(user.getUserId(), jwtTokens);
+//    }
 
     public List<UserView> searchUsers() {
         return userDao.findAll().stream().map(UserView::new).collect(Collectors.toList());

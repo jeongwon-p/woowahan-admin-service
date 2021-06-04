@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin("*") // TODO: Gateway 적용 후 CrossOrigin 어노테이션 지우기 (보안위험)
 @RestController
 @RequestMapping("/")
 public class UserController {

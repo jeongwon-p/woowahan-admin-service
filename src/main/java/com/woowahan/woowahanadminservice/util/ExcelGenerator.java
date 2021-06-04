@@ -40,7 +40,7 @@ public class ExcelGenerator {
             for (User user : users) {
                 Row row = sheet.createRow(rowIdx++);
 
-                row.createCell(0).setCellValue(user.getEmailId());
+                row.createCell(0).setCellValue(user.getId());
                 row.createCell(1).setCellValue(user.getName());
                 row.createCell(2).setCellValue(user.getRank());
                 row.createCell(3).setCellValue(user.getScore());

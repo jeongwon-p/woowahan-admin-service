@@ -15,7 +15,7 @@ public class UserView {
     private int score;
 
     public UserView(User user) {
-        this.emailId = user.getEmailId();
+        this.emailId = user.getId();
         this.name = user.getName();
         this.hidden = user.isHidden();
         this.ranking = user.getRank();
