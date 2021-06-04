@@ -32,9 +32,10 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String value) {
-        Claims claims = Jwts.claims();
-        claims.put("value", value);
+    public String createRefreshToken(String userId, List<Role> roles, String accessToken) {
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("ACCESS_TOKEN", accessToken);
+        claims.put("roles", roles);
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
 

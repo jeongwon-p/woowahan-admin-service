@@ -30,13 +30,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ApiOperation("Kakaotalk Oauth 로그인")
-    @GetMapping(value = "/oauth/kakaotalk")
-    public String getAuthorizationCode(@RequestParam("code") String authorizationCode) {
-        //String access_Token = userService.getAuthorizationCodeWithKakao(authorizationCode);
-        return "kakao/main";
-    }
-
     @ApiOperation("사용자 숨기기 및 숨기기 취소")
     @PostMapping(value = "/user/hide")
     public void hideOrCancelArticle(@RequestBody UserHideRequestBody request) {
@@ -57,9 +50,15 @@ public class UserController {
 
     @ApiOperation("로그아웃")
     @GetMapping("/logout")
-    public String logOut(HttpSession session){
+    public String logOut(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    @ApiOperation("Refresh session token")
+    @RequestMapping("/refresh/token")
+    public ResponseEntity<LogInResponse> refreshToken(@RequestParam String userId, String token) {
+        return ResponseEntity.ok().body(userService.refreshUserTokens(userId, token));
     }
 
     @ApiOperation("사용자 목록 조회")

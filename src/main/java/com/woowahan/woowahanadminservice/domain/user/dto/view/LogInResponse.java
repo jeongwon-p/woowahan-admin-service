@@ -2,11 +2,11 @@ package com.woowahan.woowahanadminservice.domain.user.dto.view;
 
 public class LogInResponse {
 
-    private String name;
+    private final String name;
 
-    private String token;
+    private final String token;
 
-    private String emailId;
+    private final String emailId;
 
     public LogInResponse(String name, String token, String emailId) {
         this.name = name;

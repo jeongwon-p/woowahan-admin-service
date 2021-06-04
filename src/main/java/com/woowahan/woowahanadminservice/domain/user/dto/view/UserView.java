@@ -4,15 +4,15 @@ import com.woowahan.woowahanadminservice.domain.user.entity.User;
 
 public class UserView {
 
-    private String emailId;
+    private final String emailId;
 
-    private String name;
+    private final String name;
 
-    private boolean hidden;
+    private final boolean hidden;
 
-    private int ranking;
+    private final int ranking;
 
-    private int score;
+    private final int score;
 
     public UserView(User user) {
         this.emailId = user.getId();

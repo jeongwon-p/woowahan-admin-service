@@ -1,5 +1,6 @@
 package com.woowahan.woowahanadminservice.domain.user.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,17 +10,19 @@ import java.util.Objects;
         name = "usertoken"
 )
 @Entity
-public class UserToken {
+public class UserSessionToken {
 
     @Id
+    @Column(name = "email_id")
     private String userId;
 
+    @Column(name = "token")
     private String token;
 
-    public UserToken() {
+    public UserSessionToken() {
     }
 
-    public UserToken(String userId, String token) {
+    public UserSessionToken(String userId, String token) {
         this.userId = userId;
         this.token = token;
     }
@@ -28,8 +31,8 @@ public class UserToken {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserToken userToken = (UserToken) o;
-        return userId.equals(userToken.userId);
+        UserSessionToken userSessionToken = (UserSessionToken) o;
+        return userId.equals(userSessionToken.userId);
     }
 
     @Override
