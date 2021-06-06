@@ -114,7 +114,7 @@ public class UserService {
         return userDao.findAll().stream().map(UserView::new).collect(Collectors.toList());
     }
 
-    public List<User> getUsers(List<String> emailId) {
-        return userDao.findAllById(emailId);
+    public List<User> getUsers() {
+        return userDao.findAll();
     }
 }

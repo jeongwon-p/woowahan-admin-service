@@ -38,7 +38,7 @@ public class UserController {
 
     @ApiOperation("사용자 등록")
     @PostMapping(value = "/user/join")
-    public void join(@RequestBody UserJoinRequestBody request) {
+    public void join(UserJoinRequestBody request) {
         userService.join(request);
     }
 
@@ -69,8 +69,8 @@ public class UserController {
 
     @ApiOperation("사용자 목록 Excel 다운로드")
     @GetMapping(value = "/user/export/excel")
-    public ResponseEntity<InputStreamResource> exportUserToExcel(@RequestParam List<String> emailId) throws IOException {
-        ByteArrayInputStream in = ExcelGenerator.exportUserToExcel(userService.getUsers(emailId));
+    public ResponseEntity<InputStreamResource> exportUserToExcel() throws IOException {
+        ByteArrayInputStream in = ExcelGenerator.exportUserToExcel(userService.getUsers());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=user.xlsx");
