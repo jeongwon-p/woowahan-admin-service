@@ -1,5 +1,6 @@
 package com.woowahan.woowahanadminservice;
 
+import com.woowahan.woowahanadminservice.common.AuthorityException;
 import com.woowahan.woowahanadminservice.common.InvalidJwtTokenException;
 import com.woowahan.woowahanadminservice.domain.user.dao.UserRepository;
 import com.woowahan.woowahanadminservice.domain.user.dao.UserSessionTokenRepository;
@@ -43,11 +44,12 @@ public class UserService {
     }
 
     @Transactional
-    public void hideOrCancelArticle(UserHideRequestBody request) {
-        User user = userDao.findById(request.getUserId())
+    public void hideOrCancelUser(UserHideRequestBody request) {
+        User targetUser = userDao.findById(request.getUserId())
                 .orElseThrow(EntityNotFoundException::new)
                 .hideOrCancel();
-        userDao.save(user);
+
+        userDao.save(targetUser);
     }
 
     @Transactional
@@ -66,6 +68,22 @@ public class UserService {
                 0,
                 Role.USER,
                 0)
+        );
+    }
+
+    @Transactional
+    public void modifyUser(UserJoinRequestBody request) {
+        User user = userDao.findById(request.getEmailId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        userDao.save(new User(
+                user.getId(),
+                user.isHidden(),
+                request.getName(),
+                encoder.encode(request.getPassword()),
+                user.getRank(),
+                user.getRole(),
+                user.getScore())
         );
     }
 
@@ -110,8 +128,12 @@ public class UserService {
         }
     }
 
+    public UserView searchUser(String userId) {
+        return new UserView(userDao.findById(userId).orElseThrow(EntityNotFoundException::new));
+    }
+
     public List<UserView> searchUsers() {
-        return userDao.findAll().stream().map(UserView::new).collect(Collectors.toList());
+        return userDao.findAllByHiddenFalse().stream().map(UserView::new).collect(Collectors.toList());
     }
 
     public List<User> getUsers() {

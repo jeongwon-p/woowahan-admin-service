@@ -1,6 +1,7 @@
 package com.woowahan.woowahanadminservice.domain.user.dto.view;
 
 import com.woowahan.woowahanadminservice.domain.user.entity.User;
+import com.woowahan.woowahanadminservice.domain.user.type.Role;
 
 public class UserView {
 
@@ -12,6 +13,8 @@ public class UserView {
 
     private final int ranking;
 
+    private final Role role;
+
     private final int score;
 
     public UserView(User user) {
@@ -19,6 +22,7 @@ public class UserView {
         this.name = user.getName();
         this.hidden = user.isHidden();
         this.ranking = user.getRank();
+        this.role = user.getRole();
         this.score = user.getScore();
     }
 
@@ -36,6 +40,10 @@ public class UserView {
 
     public int getRanking() {
         return ranking;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public int getScore() {

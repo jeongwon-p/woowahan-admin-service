@@ -32,14 +32,20 @@ public class UserController {
 
     @ApiOperation("사용자 숨기기 및 숨기기 취소")
     @PostMapping(value = "/user/hide")
-    public void hideOrCancelArticle(@RequestBody UserHideRequestBody request) {
-        userService.hideOrCancelArticle(request);
+    public void hideOrCancelUser(UserHideRequestBody request) {
+        userService.hideOrCancelUser(request);
     }
 
     @ApiOperation("사용자 등록")
     @PostMapping(value = "/user/join")
     public void join(UserJoinRequestBody request) {
         userService.join(request);
+    }
+
+    @ApiOperation("사용자 수정")
+    @PostMapping(value = "/user/modify")
+    public void modifyUser(UserJoinRequestBody request) {
+        userService.modifyUser(request);
     }
 
     @ApiOperation("로그인")
@@ -80,5 +86,11 @@ public class UserController {
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .headers(headers)
                 .body(new InputStreamResource(in));
+    }
+
+    @ApiOperation("사용자 조회")
+    @GetMapping(value = "/user/by")
+    public ResponseEntity<UserView> searchUser(@RequestParam String userId) {
+        return ResponseEntity.ok(userService.searchUser(userId));
     }
 }
